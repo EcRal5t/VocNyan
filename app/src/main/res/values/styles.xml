@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="XSpinnerStyle" parent="android:Widget.ListView.DropDown">
+        <!-- 分隔线颜色 -->
+        <item name="android:divider">#000000</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+</resources>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/v_container"
+    tools:context=".SettingActivity"
+    android:orientation="vertical">
+
+    <View
+        android:layout_height="10dp"
+        android:layout_width="match_parent"
+        android:background="#00000000"/>
+
+    <Button
+        android:id="@+id/btn_add_dict"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dict_manager_add_dict"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="30dp"
+        android:textColor="?attr/colorTextDefault"
+        android:background="#00000000"
+        android:foreground="?selectableItemBackground"/>
+    <Button
+        android:id="@+id/btn_import_dict"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dict_manager_import_dict"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="30dp"
+        android:textColor="?attr/colorTextDefault"
+        android:background="#00000000"
+        android:foreground="?selectableItemBackground"/>
+    <Button
+        android:id="@+id/btn_export_dict"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dict_manager_export_data"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="30dp"
+        android:textColor="?attr/colorTextDefault"
+        android:background="#00000000"
+        android:foreground="?selectableItemBackground"/>
+
+    <View
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:background="#00000000"/>
+
+    <Button
+        android:id="@+id/btn_select_dict"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/dict_manager_select_dict"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:layout_marginHorizontal="10dp"
+        android:textAllCaps="false"
+        android:foreground="?selectableItemBackground"/>
+
+    <LinearLayout
+        android:id="@+id/v_select_dict"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="15dp"
+        tools:context=".SettingActivity"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/btn_replace_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dict_manager_substitute_map"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="30dp"
+            android:textColor="?attr/colorTextDefault"
+            android:background="#00000000"
+            android:foreground="?selectableItemBackground" />
+        <Button
+            android:id="@+id/btn_ellipsis_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dict_manager_ellipsis_map"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="30dp"
+            android:textColor="?attr/colorTextDefault"
+            android:background="#00000000"
+            android:foreground="?selectableItemBackground" />
+        <Button
+            android:id="@+id/btn_font_path"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dict_manager_font_path"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="30dp"
+            android:textColor="?attr/colorTextDefault"
+            android:background="#00000000"
+            android:foreground="?selectableItemBackground" />
+        <Button
+            android:id="@+id/btn_highlight_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dict_manager_highlight_field"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="30dp"
+            android:textColor="?attr/colorTextDefault"
+            android:background="#00000000"
+            android:foreground="?selectableItemBackground" />
+        <Button
+            android:id="@+id/btn_display_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dict_manager_dict_note"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="30dp"
+            android:textColor="?attr/colorTextDefault"
+            android:background="#00000000"
+            android:foreground="?selectableItemBackground" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_dict_editable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dict_manager_dict_editable"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="30dp"
+            android:textColor="?attr/colorTextDefault"
+            android:background="#00000000"
+            android:foreground="?selectableItemBackground" />
+        <Button
+            android:id="@+id/btn_delete_dict"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dict_manager_delete_dict"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="30dp"
+            android:textColor="@color/red_500"
+            android:background="#00000000"
+            android:foreground="?selectableItemBackground" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_sort_rule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dict_manager_sort_rule"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="30dp"
+        android:textColor="?attr/colorTextDefault"
+        android:background="#00000000"
+        android:foreground="?selectableItemBackground" />
+    <Button
+        android:id="@+id/btn_info"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="@string/dict_manager_btn_info"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        android:gravity="end|center"
+        android:layout_marginTop="15dp"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="0dp"
+        android:background="#00000000"
+        android:textColor="@color/blue_deep"
+        android:foreground="?selectableItemBackground"/>
+
+    <View
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="#00000000"/>
+
+</LinearLayout>

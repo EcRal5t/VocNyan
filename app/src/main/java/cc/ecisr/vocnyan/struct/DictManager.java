@@ -2,6 +2,7 @@ package cc.ecisr.vocnyan.struct;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabaseCorruptException;
 import android.graphics.Typeface;
@@ -39,7 +40,7 @@ public class DictManager {
 	
 	public enum STATUS {
 		SUCCESS, ERR_INVALID_FILE, ERR_KEY_CONFLICT, ERR_UNALLOWED_ACTION, ERR_INVALID_FORMAT,
-		ERR_EMPTY_INPUT, ERR_KEY_FORMAT, ERR_UNKNOWN
+		ERR_EMPTY_INPUT, ERR_KEY_FORMAT, ERR_UNKNOWN, ERR_NO_PERMISSION
 	}
 	
 	static public void initialize() {
@@ -122,6 +123,8 @@ public class DictManager {
 			c1.close();
 		} catch (SQLiteDatabaseCorruptException e) {
 			return STATUS.ERR_INVALID_FORMAT;
+		} catch (SQLiteCantOpenDatabaseException e) {
+			return STATUS.ERR_NO_PERMISSION;
 		}
 		if (!sheetNames.contains(DB_TABLE_INFO)) { return STATUS.ERR_INVALID_FORMAT; }
 		Cursor c2 = dbExtra.query(DB_TABLE_INFO, null,null,null,null,null,null,null);

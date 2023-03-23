@@ -20,11 +20,13 @@
         <activity
             android:name=".SettingActivity"
             android:exported="false"
-            android:label="@string/title_activity_settings" />
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".InfoActivity"
             android:exported="false"
-            android:label="@string/title_activity_info"/>
+            android:label="@string/title_activity_info"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

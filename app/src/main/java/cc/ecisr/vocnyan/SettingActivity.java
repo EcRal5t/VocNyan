@@ -2,7 +2,9 @@ package cc.ecisr.vocnyan;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -25,6 +27,8 @@ import java.util.List;
 
 import cc.ecisr.vocnyan.struct.Configs;
 import cc.ecisr.vocnyan.struct.DictManager;
+import cc.ecisr.vocnyan.struct.ResultEntryManager;
+import cc.ecisr.vocnyan.utils.DbUtil;
 import cc.ecisr.vocnyan.utils.ToastUtil;
 
 public class SettingActivity extends AppCompatActivity {
@@ -60,13 +64,15 @@ public class SettingActivity extends AppCompatActivity {
 		btnImportDict.setOnClickListener(view -> settingBtnListener(view.getId()));
 		btnExportDict.setOnClickListener(view -> settingBtnListener(view.getId()));
 		btnSelectDict.setOnClickListener(view -> settingBtnListener(view.getId()));
-		btnSelectDict.setOnLongClickListener(view -> settingBtnLongClickListener(view.getId()));
 		btnReplaceMap.setOnClickListener(view -> settingBtnListener(view.getId()));
 		btnEllipsisMap.setOnClickListener(view -> settingBtnListener(view.getId()));
 		btnSetFontPath.setOnClickListener(view -> settingBtnListener(view.getId()));
 		btnHighlightField.setOnClickListener(view -> settingBtnListener(view.getId()));
 		btnDisplayNote.setOnClickListener(view -> settingBtnListener(view.getId()));
 		btnDeleteDict.setOnClickListener(view -> settingBtnListener(view.getId()));
+
+		btnExportDict.setOnLongClickListener(view -> settingBtnLongClickListener(view.getId()));
+		btnSelectDict.setOnLongClickListener(view -> settingBtnLongClickListener(view.getId()));
 		
 		switchDictEditable.setOnCheckedChangeListener((compoundButton, b) -> {
 			if (compoundButton.isPressed()) {
@@ -103,9 +109,10 @@ public class SettingActivity extends AppCompatActivity {
 				.setNegativeButton(R.string.button_cancel, null);
 		final TextView vTips = v.findViewById(R.id.alertdialog_tips);
 		final EditText vInput = v.findViewById(R.id.alertdialog_input);
-		
+		Log.i(TAG, "settingBtnLongClickListener: " + viewId);
 		if (viewId == R.id.btn_select_dict) {
-			vTips.setText("更改词典名称");
+			Log.i(TAG, ((Integer) R.id.btn_select_dict).toString());
+			vTips.setText("在此更改词典名称\n名称不应有半角「+」「-」「*」「!」等特殊符号，否则将导致应用崩溃");
 			vInput.setText(DictManager.getSelectingAttr(DictManager.KEY.NAME));
 			alertWithInput.setTitle(getResources().getString(R.string.dict_manager_rename_dict_with_entry, DictManager.getSelectingAttr(DictManager.KEY.NAME)))
 					.setPositiveButton(R.string.button_confirm, (dialogInterface, i) -> {
@@ -125,6 +132,37 @@ public class SettingActivity extends AppCompatActivity {
 					
 					});
 			alertWithInput.create().show();
+		} else if (viewId == R.id.btn_export_dict) {
+			Log.i(TAG, ((Integer) R.id.btn_export_dict).toString());
+			new AlertDialog.Builder(this)
+					.setMessage("要生成整部词典的纯文本格式吗？这可能会导致应用假死")
+					.setPositiveButton(R.string.button_confirm, (dialogInterface, i) -> {
+						View view = getLayoutInflater().inflate(R.layout.layout_copy_alertdialog, null);
+						EditText et = view.findViewById(R.id.dialog_box_tv);
+						StringBuilder sb = new StringBuilder();
+						String name = DictManager.getSelectingAttr(DictManager.KEY.NAME);
+						String sql = String.format("SELECT * FROM `%s`;", name);
+						Cursor cursor = DbUtil.getDb().query(name,null,null,null,null,null , null);
+						while (cursor.moveToNext()) {
+							String term = cursor.getString(1).replace("\"", "\"\"");
+							String supp = cursor.getString(2).replace("\"", "\"\"");
+							String clas = cursor.getString(3).replace("\"", "\"\"");
+							String affi = cursor.getString(4).replace("\"", "\"\"");
+							String mean = cursor.getString(5).replace("\"", "\"\"");
+							sb.append(cursor.getInt(0)).append("\t")
+									.append(!term.contains("\n") ? term : "\""+term+"\"").append("\t")
+									.append(!supp.contains("\n") ? supp : "\""+supp+"\"").append("\t")
+									.append(!clas.contains("\n") ? clas : "\""+clas+"\"").append("\t")
+									.append(!affi.contains("\n") ? affi : "\""+affi+"\"").append("\t")
+									.append(!mean.contains("\n") ? mean : "\""+mean+"\"").append("\t");
+							sb.append("\n");
+						}
+						cursor.close();
+						et.setText(sb.toString());
+						//tv.setTypeface(DictManager.getFont(holder.entry.dictIndex()));
+						new AlertDialog.Builder(SettingActivity.this).setView(view).show();
+					}).setNegativeButton(R.string.button_cancel, null)
+					.create().show();
 		}
 		return false;
 	}
@@ -138,8 +176,8 @@ public class SettingActivity extends AppCompatActivity {
 		final EditText vInput = v.findViewById(R.id.alertdialog_input);
 		
 		if (viewId == R.id.btn_add_dict) {
-			vTips.setText("输入词典名称");
-			alertWithInput.setTitle(R.string.dict_manager_select_dict)
+			vTips.setText("在此输入词典名称\n随后可长按「添加词典」按钮改名\n名称不应有半角「+」「-」「*」「!」等特殊符号，否则将导致应用崩溃");
+			alertWithInput.setTitle(R.string.dict_manager_add_dict)
 					.setPositiveButton(R.string.button_confirm, (dialogInterface, i) -> {
 						if (!TextUtils.isEmpty(vInput.getText().toString())) {
 							DictManager.STATUS resultStatus = DictManager.addDict(vInput.getText().toString());
@@ -153,7 +191,7 @@ public class SettingActivity extends AppCompatActivity {
 			if (requirePermissionIfNotProvided()) {
 				vTips.setText("词典导入绝对路径\n必须是.db文件，且格式必须严格符合说明页中的要求");
 				vInput.setText(sp.getString("settings_import_path", Environment.getExternalStorageDirectory().getPath()));
-				alertWithInput.setTitle(R.string.dict_manager_add_dict)
+				alertWithInput.setTitle(R.string.dict_manager_import_dict)
 						.setPositiveButton(R.string.button_confirm, (dialogInterface, i) -> {
 							String input = vInput.getText().toString();
 							if (!TextUtils.isEmpty(input)) {
@@ -168,9 +206,9 @@ public class SettingActivity extends AppCompatActivity {
 			}
 		} else if (viewId == R.id.btn_export_dict) {
 			if (requirePermissionIfNotProvided()) {
-				vTips.setText("词典导出绝对路径");
+				vTips.setText("词典导出绝对路径，导出格式为 .db 即 sqlite3 格式\n若希望获得纯文本格式，请长按「导出」按钮");
 				vInput.setText(sp.getString("settings_export_path", Environment.getExternalStorageDirectory().getPath()));
-				alertWithInput.setTitle(R.string.dict_manager_add_dict)
+				alertWithInput.setTitle(R.string.dict_manager_export_data)
 						.setPositiveButton(R.string.button_confirm, (dialogInterface, i) -> {
 							String input = vInput.getText().toString();
 							if (!TextUtils.isEmpty(input)) {
@@ -270,6 +308,7 @@ public class SettingActivity extends AppCompatActivity {
 			case ERR_EMPTY_INPUT:      tips = R.string.action_tips_err_empty_input; break;
 			case ERR_KEY_FORMAT:       tips = R.string.action_tips_err_key_format; break;
 			case ERR_UNKNOWN:          tips = R.string.action_tips_err_unknown; break;
+			case ERR_NO_PERMISSION:    tips = R.string.action_tips_err_no_permission; break;
 			default: tips = 0; assert false;
 		}
 		ToastUtil.msg(this, getString(tips));

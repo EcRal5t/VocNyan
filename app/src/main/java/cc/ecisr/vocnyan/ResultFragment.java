@@ -49,13 +49,7 @@ public class ResultFragment extends Fragment {
 				new AlertDialog.Builder(getContext())
 						.setItems(selections, (dialogInterface, i) -> {
 							if (i == 0) {
-								View view = inflater.inflate(R.layout.layout_copy_alertdialog, null);
-								TextView tv = view.findViewById(R.id.dialog_box_tv);
-								tv.setText(holder.printContent());
-								tv.setTypeface(DictManager.getFont(holder.entry.dictIndex()));
-								//tv.setTypeface(Typeface.createFromAsset(inflater.getContext().getAssets(), "HuanZhuangziSong.otf"));
-								new AlertDialog.Builder(getContext())
-										.setView(view).setPositiveButton(R.string.button_confirm, null).show();
+								executeCopyAlert(inflater, holder);
 							} else if (i == 1) {
 								executeEditionAlert(inflater, holder);
 							} else if (i == 2) {
@@ -69,6 +63,8 @@ public class ResultFragment extends Fragment {
 			public boolean onLongClick(@NonNull ResultItemAdapter.LinearViewHolder holder) {
 				if ("1".equals(DictManager.getSelectingAttr(DictManager.KEY.EDITABLE))) {
 					executeEditionAlert(inflater, holder);
+				} else {
+					executeCopyAlert(inflater, holder);
 				}
 				return false;
 			}
@@ -84,7 +80,15 @@ public class ResultFragment extends Fragment {
 		
 		return selfView;
 	}
-	
+
+	void executeCopyAlert(LayoutInflater inflater, @NonNull ResultItemAdapter.LinearViewHolder holder) {
+		View view = inflater.inflate(R.layout.layout_copy_alertdialog, null);
+		EditText et = view.findViewById(R.id.dialog_box_tv);
+		et.setText(holder.printContent());
+		et.setTypeface(DictManager.getFont(holder.entry.dictIndex()));
+		new AlertDialog.Builder(getContext()).setView(view).show();
+	}
+
 	void executeEditionAlert(LayoutInflater inflater, @NonNull ResultItemAdapter.LinearViewHolder holder) {
 		View main = inflater.inflate(R.layout.layout_edit_alertdialog, null);
 		View preview = inflater.inflate(R.layout.layout_result_list_item, null);

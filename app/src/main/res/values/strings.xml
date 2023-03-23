@@ -3,11 +3,11 @@
     <string name="app_version_main">220725</string>
     <string name="app_version_database">220725</string>
 
-    <string name="search_tips">……</string>
+    <string name="search_tips">检索…详见右上帮助</string>
     <string name="search_clear">×</string>
-    <string name="result_list_left">词头…</string>
-    <string name="result_list_upper">词类…</string>
-    <string name="result_list_bottom">释义…</string>
+    <string name="result_list_left">词头</string>
+    <string name="result_list_upper">（可选的任意内容）</string>
+    <string name="result_list_bottom">（必填的任意内容）</string>
 
     <string name="button_confirm">确认</string>
     <string name="button_cancel">取消</string>
@@ -23,11 +23,11 @@
     <string name="entry_menu_add_success_with_term">添加成功: %s</string>
     <string name="entry_menu_add_err_no_name">不允许的操作：词头为空</string>
     <string name="entry_menu_del">删除</string>
-    <string name="menu_appendix">说明</string>
-    <string name="menu_settings">说明</string>
+    <string name="menu_appendix">帮助</string>
+    <string name="menu_settings">设置</string>
 
     <string name="title_activity_settings">设置</string>
-    <string name="title_activity_info">关于</string>
+    <string name="title_activity_info">帮助</string>
     <string name="setting_manage_dict">选取词典</string>
     <string name="setting_require_permission_failed">储存权限获取失败，将不能使用导出/导入功能</string>
     <string name="setting_not_provide_permission">未提供储存权限，不能使用导出/导入功能</string>
@@ -48,7 +48,7 @@
     <string name="dict_manager_sort_rule_length">排序规则：按词长排序</string>
     <string name="dict_manager_sort_rule_unicode">排序规则：按 unicode 排序</string>
     <string name="dict_manager_sort_rule_exception">排序排除字符</string>
-    <string name="dict_manager_btn_info">版本: %s | by Ecisral Hetha</string>
+    <string name="dict_manager_btn_info">版本: %s</string>
 
     <string name="entry_manager_add_dict">添加词条</string>
     <string name="tips_empty_dict_storage">词库为空</string>
@@ -60,7 +60,9 @@
     <string name="action_tips_err_key_format">错误: 输入格式有误</string>
     <string name="action_tips_err_unallowed_action">错误: 不准许的操作</string>
     <string name="action_tips_err_empty_input">错误: 输入为空</string>
+    <string name="action_tips_err_no_permission">错误: 没有存储权限</string>
     <string name="action_tips_err_unknown">错误: 未知问题</string>
+
 
 
 </resources>

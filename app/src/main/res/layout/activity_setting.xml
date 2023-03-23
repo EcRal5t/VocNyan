@@ -15,7 +15,7 @@
     <Button
         android:id="@+id/btn_add_dict"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="@string/dict_manager_add_dict"
         android:gravity="center_vertical"
         android:paddingHorizontal="30dp"
@@ -25,7 +25,7 @@
     <Button
         android:id="@+id/btn_import_dict"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="@string/dict_manager_import_dict"
         android:gravity="center_vertical"
         android:paddingHorizontal="30dp"
@@ -35,7 +35,7 @@
     <Button
         android:id="@+id/btn_export_dict"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="@string/dict_manager_export_data"
         android:gravity="center_vertical"
         android:paddingHorizontal="30dp"
@@ -51,7 +51,7 @@
     <Button
         android:id="@+id/btn_select_dict"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
         android:text="@string/dict_manager_select_dict"
         android:gravity="center_vertical"
         android:paddingHorizontal="20dp"
@@ -69,7 +69,7 @@
         <Button
             android:id="@+id/btn_replace_map"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/dict_manager_substitute_map"
             android:gravity="center_vertical"
             android:paddingHorizontal="30dp"
@@ -79,7 +79,7 @@
         <Button
             android:id="@+id/btn_ellipsis_map"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/dict_manager_ellipsis_map"
             android:gravity="center_vertical"
             android:paddingHorizontal="30dp"
@@ -89,7 +89,7 @@
         <Button
             android:id="@+id/btn_font_path"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/dict_manager_font_path"
             android:gravity="center_vertical"
             android:paddingHorizontal="30dp"
@@ -99,7 +99,7 @@
         <Button
             android:id="@+id/btn_highlight_field"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/dict_manager_highlight_field"
             android:gravity="center_vertical"
             android:paddingHorizontal="30dp"
@@ -109,7 +109,7 @@
         <Button
             android:id="@+id/btn_display_note"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/dict_manager_dict_note"
             android:gravity="center_vertical"
             android:paddingHorizontal="30dp"
@@ -119,7 +119,7 @@
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch_dict_editable"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/dict_manager_dict_editable"
             android:gravity="center_vertical"
             android:paddingHorizontal="30dp"
@@ -129,7 +129,7 @@
         <Button
             android:id="@+id/btn_delete_dict"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/dict_manager_delete_dict"
             android:gravity="center_vertical"
             android:paddingHorizontal="30dp"
@@ -141,7 +141,7 @@
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_sort_rule"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="@string/dict_manager_sort_rule"
         android:gravity="center_vertical"
         android:paddingHorizontal="30dp"
@@ -160,7 +160,7 @@
         android:paddingHorizontal="30dp"
         android:paddingVertical="0dp"
         android:background="#00000000"
-        android:textColor="@color/blue_deep"
+        android:textColor="@color/blue_200"
         android:foreground="?selectableItemBackground"/>
 
     <View

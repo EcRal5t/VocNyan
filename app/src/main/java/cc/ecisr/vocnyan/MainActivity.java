@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -103,11 +104,15 @@ public class MainActivity extends AppCompatActivity {
 	
 	void search(String s) {
 		ResultItemAdapter.ResultInfo.clearItem();
-		ResultEntryManager.ResultEntry[] resultEntries =  ResultEntryManager.search(s);
-		for (ResultEntryManager.ResultEntry entry : resultEntries) {
-			if (ResultItemAdapter.ResultInfo.isAddedEntry(entry.id())) { continue; }
-			entry.termHighlightColor(getResources().getColor(R.color.blue_500));
-			ResultItemAdapter.ResultInfo.addItem(entry);
+		if (DictManager.dictCount()>0) {
+			ResultEntryManager.ResultEntry[] resultEntries = ResultEntryManager.search(s);
+			for (ResultEntryManager.ResultEntry entry : resultEntries) {
+				if (ResultItemAdapter.ResultInfo.isAddedEntry(entry.id())) {
+					continue;
+				}
+				entry.termHighlightColor(getResources().getColor(R.color.blue_500));
+				ResultItemAdapter.ResultInfo.addItem(entry);
+			}
 		}
 		resultFragment.refreshResult();
 	}
@@ -161,6 +166,13 @@ public class MainActivity extends AppCompatActivity {
 				left.setText("");
 				upper.setText("");
 				bottom.setText("");
+			}
+			if (view.getId() != R.id.btn_preview) {
+				if (TextUtils.isEmpty(inputEditText.getText())) {
+				
+				} else {
+					search(inputEditText.getText().toString());
+				}
 			}
 		};
 		btnPreview.setOnClickListener(l);

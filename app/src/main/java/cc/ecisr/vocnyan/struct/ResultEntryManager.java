@@ -43,7 +43,9 @@ public class ResultEntryManager {
 	}
 	
 	static public ResultEntry[] search(String s) {
-		if ("".equals(s)) return new ResultEntry[0];
+		if (".".equals(s)) {
+			return retrieveResultBySql(KEY.ID, ">=", "0", "ORDER BY `" + KEY.ID + "` DESC");
+		}
 		try { Pattern.compile(s); } catch (PatternSyntaxException ignored) { return new ResultEntry[0]; }
 		if (s.matches("\\d+")) {
 			ResultEntry[] inId = retrieveResultBySql(KEY.ID, ">=", s);
@@ -51,7 +53,9 @@ public class ResultEntryManager {
 			return StringUtil.concat(inId, inTerm);
 		} else {
 			ResultEntry[] inTerm = retrieveResult(KEY.TERM, s);
-			ResultEntry[] inMean = retrieveResult(KEY.MEAN, s);
+			ResultEntry[] inMean = retrieveResult(KEY.MEAN, ".*" + s);
+			//ResultEntry[] inClass = retrieveResult(KEY.CLASS, ".*" + s);
+			//return StringUtil.concat(StringUtil.concat(inTerm, inMean), inClass);
 			return StringUtil.concat(inTerm, inMean);
 		}
 	}
@@ -75,13 +79,18 @@ public class ResultEntryManager {
 		
 		return StringUtil.concat(resultEntries1, resultEntries2);
 	}
- 
+	
 	@NonNull
 	static ResultEntry[] retrieveResultBySql(KEY col, String method, String desc) {
+		return retrieveResultBySql(col, method, desc, "");
+	}
+	
+	@NonNull
+	static ResultEntry[] retrieveResultBySql(KEY col, String method, String desc, String sup) {
 		//if (db == null) return new ResultEntry[0];
 		String name = DictManager.getSelectingAttr(DictManager.KEY.NAME);
 		//String sql = String.format("SELECT * FROM `%s` WHERE `id` IN (SELECT `id` FROM `%s` WHERE %s %s ? LIMIT 200)", name, name, col, method);
-		String sql = String.format("SELECT * FROM `%s` WHERE %s %s ? LIMIT 200", name, col, method);
+		String sql = String.format("SELECT * FROM `%s` WHERE %s %s ? %s LIMIT 100 ", name, col, method, sup);
 		Log.i(TAG, "retrieveResultBySql(): " + sql.replace("?", desc));
 		try {
 			Cursor cursor = db.rawQuery(sql, new String[]{desc});
@@ -92,7 +101,7 @@ public class ResultEntryManager {
 				entry.dictIndex = DictManager.selectingDictIndex;
 				entry.id = cursor.getInt(0);
 				entry.term = cursor.getString(1);
-//				Log.i(TAG, "retrieveResultBySql: id=" + entry.id + ", term="+entry.term);
+				Log.i(TAG, "retrieveResultBySql: id=" + entry.id + ", term="+entry.term);
 				entry.supplement = cursor.getString(2);
 				entry.class_ = cursor.getString(3);
 				entry.affixrule = cursor.getString(4);
@@ -159,21 +168,18 @@ public class ResultEntryManager {
 			DictManager.ArrayListMap<String> highlight = DictManager.getMap(dictIndex, DictManager.KEY.HIGHLIGHT);
 			ssb.append(constructSsbWithHighlight(class_, highlight));
 			if (!"".equals(affixrule)) {
-				ssb.append(" | ").append(affixrule);
+				ssb.append(" | ").append(constructSsbWithHighlight(affixrule, highlight));
 			}
 			return new SpannableString(ssb);
 		}
 		public SpannableString printBottom() {
-			int beginPosition, endPosition;
 			SpannableStringBuilder ssb = new SpannableStringBuilder();
 			DictManager.ArrayListMap<String> highlight = DictManager.getMap(dictIndex, DictManager.KEY.HIGHLIGHT);
 			ssb.append(constructSsbWithHighlight(mean, highlight));
 			if (!"".equals(supplement)) {
-				beginPosition = ssb.length();
-				ssb.append("\n").append(supplement);
-				endPosition = ssb.length();
-				ssb.setSpan(new RelativeSizeSpan(0.8f),
-						beginPosition, endPosition, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				ssb.append("\n");
+				ssb.append(constructSsbWithHighlight(supplement, highlight),
+						new RelativeSizeSpan(0.8f), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 			return new SpannableString(ssb);
 		}
@@ -183,7 +189,7 @@ public class ResultEntryManager {
 			int index = 0, beginPosition, endPosition;
 			String key, val;
 			String[] segs = s.split("(?<=[^\\\\]|^)#");
-			ssb.append(segs[0]);
+			ssb.append(segs[0].replace("\\#", "#"));
 			for (int j=1; j <segs.length; j++) {
 				String seg = segs[j].replace("\\#", "#");
 				if (TextUtils.isEmpty(seg)) { continue; }
@@ -224,7 +230,7 @@ public class ResultEntryManager {
 				}
 			}
 			
-			for (; index > 0; index--) {
+			for (index = highlight.getCount(); index > 0; index--) {
 				String s_ = ssb.toString();
 				key = highlight.key(index-1);
 				if (key.startsWith("#")) { continue; }
@@ -261,7 +267,8 @@ public class ResultEntryManager {
 			return term;
 		}
 		public String dumpUpper() {
-			return TextUtils.isEmpty(affixrule) ? class_ : class_+Configs.PARSE_UPPER_SEPARATE_SIGN+affixrule;
+			return class_;
+			//return TextUtils.isEmpty(affixrule) ? class_ : class_+Configs.PARSE_UPPER_SEPARATE_SIGN+affixrule;
 		}
 		public String dumpBottom() {
 			return TextUtils.isEmpty(supplement) ? mean : mean+"\n"+Configs.SEARCH_SEPARATE_SIGN+"\n"+supplement;
@@ -287,14 +294,16 @@ public class ResultEntryManager {
 			return this;
 		}
 		public ResultEntry parseUpper(String upper) {
-			if (!upper.contains(Configs.PARSE_UPPER_SEPARATE_SIGN)) {
-				class_ = upper;
-				affixrule = "";
-			} else {
-				String[] tmp = upper.split(Configs.PARSE_UPPER_SEPARATE_SIGN, 2);
-				class_ = tmp[0].trim();
-				affixrule = tmp[1].trim();
-			}
+//			if (!upper.contains(Configs.PARSE_UPPER_SEPARATE_SIGN)) {
+//				class_ = upper;
+//				affixrule = "";
+//			} else {
+//				String[] tmp = upper.split(Configs.PARSE_UPPER_SEPARATE_SIGN, 2);
+//				class_ = tmp[0].trim();
+//				affixrule = tmp[1].trim();
+//			}
+			class_ = upper;
+			affixrule = "";
 			return this;
 		}
 		public ResultEntry parseBottom(String bottom) {
